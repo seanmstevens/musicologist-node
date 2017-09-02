@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var app = require('../app');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -12,6 +13,8 @@ const request = require('request');
 const keys = require('./keys').spotifyKeys;
 let token;
 const results = [];
+
+// API token request
 
 const authOptions = {
   url: 'https://accounts.spotify.com/api/token',
@@ -28,7 +31,12 @@ request.post(authOptions, function(error, response, body) {
   token = body.access_token;
 });
 
-// API token request
+router.get('/search', function(req, res) {
+  console.log('Request Received');
+  res.body = "This works";
+  console.log(res.body);
+  res.send('This works????');
+});
 
 router.post('/', function(req, res) {
 
