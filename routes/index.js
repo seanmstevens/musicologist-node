@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var app = require('../app');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -12,7 +11,7 @@ router.get('/', function(req, res, next) {
 const request = require('request');
 const keys = require('./keys').spotifyKeys;
 let token;
-const results = [];
+let results = [];
 
 // API token request
 
@@ -32,18 +31,13 @@ request.post(authOptions, function(error, response, body) {
 });
 
 router.get('/search', function(req, res) {
-  console.log('Request Received');
-  res.body = "This works";
-  console.log(res.body);
-  res.send('This works????');
-});
 
-router.post('/', function(req, res) {
+  results = [];
 
-  let query = req.body.param_query;
+  let query = req.query.term;;
 
   let searchOptions = {
-    url: "https://api.spotify.com/v1/search?q=" + query + "&type=playlist&limit=10",
+    url: "https://api.spotify.com/v1/search?q=" + query + "&type=playlist&limit=20",
     headers: {
       'Authorization': 'Bearer ' + token
     },
@@ -51,19 +45,15 @@ router.post('/', function(req, res) {
   };
 
   request.get(searchOptions, function(error, response, body) {
-    console.log(body.playlists.items.length);
 
     let searchResults = Array.from(body.playlists.items);
     let filteredResults = searchResults.filter((value, index) => value.tracks.total >= 10);
 
-    console.log(filteredResults.length);
-
     if (filteredResults.length === 0) {
-      console.log("No results. Try narrowing your search.");
+      res.json(results);
     } else {
       let playlistLength = filteredResults.length;
       let randomPlaylist = Math.floor(Math.random() * playlistLength);
-      console.log(randomPlaylist);
 
       const playlistReqOptions = {
         url: filteredResults[randomPlaylist].tracks.href,
@@ -77,9 +67,12 @@ router.post('/', function(req, res) {
         let i = 0;
         while (i < body.items.length && i < 20) {
           let track = body.items[i].track;
-          console.log(track.artists[0].name + " - " + track.name + " (Album: " + track.album.name + ")");
+          results.push({"artist": track.artists[0].name,
+                        "track": track.name,
+                        "album": track.album.name});
           i++;
         }
+        res.json(results);
       });
     }
   });
