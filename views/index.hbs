@@ -8,14 +8,19 @@
   </div>
 </nav>
 <div class="container">
-  <div class="modal fade" id="playlistModal" tabindex="-1" role="dialog" aria-labelledby="playlistModal" aria-hidden="true">
+  <div class="modal fade-custom" id="playlistModal" tabindex="-1" role="dialog" aria-labelledby="playlistModal" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header display-4">
           <h5 class="modal-title" id="playlistModalLabel">Your Playlist</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&#10006;</span>
           </button>
+        </div>
+        <div class="loader" id="loader">
+          <svg class="circular">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+          </svg>
         </div>
         <div class="modal-body" id="musicQueryResults">
         </div>
@@ -30,12 +35,16 @@
 <div class="flex-container">
   <div class="container section">
     <div class="row">
-      <h1 class="col col-centered">My Music Interests</h1>
+      <h1 class="col col-centered">Musicologist</h1>
     </div>
     <div class="row">
       <div class="container">
         <div class="eight offset-by-one columns">
-          <input type="text" class="u-full-width" id="musicField" placeholder="Song Name, Artist...">
+          <input type="text" class="u-full-width" id="musicField"
+            data-toggle="popover" data-placement="left"
+            data-trigger="focus" title="Empty search"
+            data-content="Provide at least one search term."
+            placeholder="Song name, artist...">
         </div>
         <div class="two columns">
           <button id="addButton" class="button" type="button">Add</button>
@@ -48,8 +57,9 @@
     </div>
     <div class="row">
       <div class="col">
-        <button id="getPlaylistBtn" class="button-primary"
-          data-toggle="modal" data-target="#playlistModal">Get Playlist</button>
+        <button id="getPlaylistBtn" class="button-primary">
+            Get Playlist
+        </button>
       </div>
     </div>
   </div>

@@ -48,34 +48,56 @@ function generateResults(results) {
   $.each(results, function(key, value) {
     const $thisRow = $row.clone();
     $thisRow.append('<td class="song-column">' + value.track + '</td>')
-      .append('<td>' + value.artist + '</td>')
-      .append('<td>' + value.album + '</td>')
+      .append('<td class="artist-column">' + value.artist + '</td>')
+      .append('<td class="album-column">' + value.album + '</td>')
     $tableBody.append($thisRow);
   });
 }
 
+// Toggle display of AJAX preloader animation
+
+$(document).ajaxStart(function() {
+  $('#loader').css({'display': 'flex'});
+});
+
+$(document).ajaxComplete(function() {
+  $('#loader').css({'display': 'none'});
+});
+
 $('#getPlaylistBtn').click(function(event) {
-  let searchTerm = musicInfo.join('+');
 
-  $('#musicQueryResults').empty();
+  const input = $('#musicField');
 
-  $.ajax({
-    url: '/search',
-    dataType: 'json',
-    data: {
-      term: searchTerm
-    }
-  }).then(function(data) {
-    if (data.length === 0) {
-      $('#musicQueryResults')
-        .append('<h3 class="header-small-margin">No results found.</h3>')
-        .append('<small>Try narrowing your search results.</small>');
-    } else {
-      generateResults(data);
-    }
-  }).catch(function(err) {
-      console.error('Error:', err);
-  });
+  if (musicInfo.length === 0) {
+    input.popover('enable').popover('show');
+    input.click(function() {
+      $(this).popover('hide').popover('disable');
+    });
+  } else {
+    let searchTerm = musicInfo.join('+');
+
+    $('#musicQueryResults').empty();
+
+    $('#playlistModal').modal('show');
+
+    $.ajax({
+      url: '/search',
+      dataType: 'json',
+      data: {
+        term: searchTerm
+      }
+    }).done(function(data) {
+      if (data.length === 0) {
+        $('#musicQueryResults')
+          .append('<h3 class="header-small-margin">No results found.</h3>')
+          .append('<small>Try narrowing your search results.</small>');
+      } else {
+        generateResults(data)
+      }
+    }).catch(function(err) {
+        console.error('Error:', err);
+    });
+  }
 });
 
 $(document.body).on({click: function() {
