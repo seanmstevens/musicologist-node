@@ -36,7 +36,7 @@ router.get('/search', function(req, res) {
 
   results = [];
 
-  let query = req.query.term;;
+  let query = req.query.term;
 
   let searchOptions = {
     url: "https://api.spotify.com/v1/search?q=" + query + "&type=playlist&limit=20",
@@ -60,6 +60,8 @@ router.get('/search', function(req, res) {
         let playlistLength = filteredResults.length;
         let randomPlaylist = Math.floor(Math.random() * playlistLength);
 
+        const externalURL = filteredResults[randomPlaylist].external_urls.spotify
+;
         const playlistReqOptions = {
           url: filteredResults[randomPlaylist].tracks.href,
           headers: {
@@ -70,13 +72,15 @@ router.get('/search', function(req, res) {
 
         request.get(playlistReqOptions, function(error, response, body) {
           if (body.items !== 'undefined') {
+            results.push({"link": externalURL});
             let validTracks = 0;
             let i = 0;
             while (i < body.items.length && validTracks < 20) {
               if (body.items[i].track !== null) {
                 let track = body.items[i].track;
                 results.push({"artist": track.artists[0].name,
-                              "track": track.name,
+                              "track": {'name': track.name,
+                                        'href': track.external_urls.spotify},
                               "album": track.album.name});
                 validTracks += 1;
               }

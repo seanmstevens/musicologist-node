@@ -3,12 +3,12 @@
 body {
   margin: 0;
   box-sizing: border-box;
-  padding: 1.6rem 3.2rem;
+  padding: 0rem 3.2rem;
   height: 100vh;
 }
 
 .flex-container {
-  height: 85%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -16,10 +16,15 @@ body {
 }
 
 .section {
+  height: 315px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   text-align: center;
+}
+
+#playlistParameters {
+  margin-bottom: 0;
 }
 
 .list-group-item {
@@ -30,6 +35,28 @@ body {
   border: 1px solid #bbb;
   border-radius: 0.5rem !important;
   margin: 0.8rem 1.6rem;
+}
+
+.button.button-primary {
+  position: relative;
+  text-decoration: none;
+}
+
+.button.button-primary.button-disabled {
+  cursor: default;
+  border-color: #85dbf6;
+  pointer-events: none;
+}
+
+.button-disabled::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: white;
+  opacity: 0.4;
 }
 
 .close-btn {
@@ -48,7 +75,7 @@ body {
   margin-bottom: 0.5rem;
 }
 
-.song-column {
+.song-column, .artist-column, .album-column {
   position: relative;
   width: 33%;
 }
@@ -85,16 +112,15 @@ body {
   top: 20%;
 }
 
-.circular{
+.circular {
   animation: rotate 2s linear infinite;
   height: 100px;
   width: 100px;
   position: relative;
 }
 
-
 .path {
-  stroke-dasharray: 1,200;
+  stroke-dasharray: 1, 200;
   stroke-dashoffset: 0;
   animation:
     fluid 1.5s ease-in-out infinite,
@@ -104,10 +130,11 @@ body {
 }
 
 @keyframes rotate {
-  100%{
+  100% {
    transform: rotate(360deg);
   }
 }
+
 @keyframes fluid {
   0%{
     stroke-dasharray: 1, 200;
@@ -122,6 +149,7 @@ body {
     stroke-dashoffset: -124;
   }
 }
+
 @keyframes color {
   100%, 0%{
     stroke: #33C3F0;

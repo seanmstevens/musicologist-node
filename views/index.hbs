@@ -1,12 +1,3 @@
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">
-        My Musicologist
-      </a>
-    </div>
-  </div>
-</nav>
 <div class="container">
   <div class="modal fade-custom" id="playlistModal" tabindex="-1" role="dialog" aria-labelledby="playlistModal" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -26,7 +17,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="button" data-dismiss="modal">Close</button>
-          <button type="button" class="button-primary">Accept</button>
+          <a target="_blank" href="#" class="button button-primary button-disabled" id="playlistLink">View in Spotify</a>
         </div>
       </div>
     </div>
@@ -35,7 +26,7 @@
 <div class="flex-container">
   <div class="container section">
     <div class="row">
-      <h1 class="col col-centered">Musicologist</h1>
+      <h1 class="col display-1">Generate a Playlist</h1>
     </div>
     <div class="row">
       <div class="container">
@@ -52,15 +43,15 @@
       </div>
     </div>
     <div class="row">
-      <ul id="playlistParameters">
-      </ul>
-    </div>
-    <div class="row">
       <div class="col">
         <button id="getPlaylistBtn" class="button-primary">
             Get Playlist
         </button>
       </div>
+    </div>
+    <div class="row">
+      <ul id="playlistParameters">
+      </ul>
     </div>
   </div>
 </div>
