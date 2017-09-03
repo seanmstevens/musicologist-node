@@ -43,7 +43,7 @@ function renderList() {
 
 function generateResults(results) {
   const $container = $('#musicQueryResults');
-  const $table = $('<table class="col"></table>');
+  const $table = $('<table class="col table-hover"></table>');
   const $tableHead = $('<thead><tr><th>Song</th><th>Artist</th><th>Album</th></tr></thead>');
   const $tableBody = $('<tbody></tbody>');
   const $row = $('<tr></tr>');

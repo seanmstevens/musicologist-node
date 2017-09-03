@@ -84,6 +84,14 @@ body {
   word-wrap: break-word;
 }
 
+td:first-child, th:first-child {
+  padding-left: 10px;
+}
+
+td:last-child, th:last-child {
+  padding-right: 10px;
+}
+
 .popover-header {
   font-size: 1.75rem;
 }
