@@ -55,13 +55,12 @@ router.get('/search', function(req, res) {
       let filteredResults = searchResults.filter((value, index) => value.tracks.total >= 10);
 
       if (filteredResults.length === 0) {
-        res.json(results);
+        res.send("No results found.");
       } else {
         let playlistLength = filteredResults.length;
         let randomPlaylist = Math.floor(Math.random() * playlistLength);
 
-        const externalURL = filteredResults[randomPlaylist].external_urls.spotify
-;
+        const externalURL = filteredResults[randomPlaylist].external_urls.spotify;
         const playlistReqOptions = {
           url: filteredResults[randomPlaylist].tracks.href,
           headers: {
@@ -73,11 +72,15 @@ router.get('/search', function(req, res) {
         request.get(playlistReqOptions, function(error, response, body) {
           if (body.items !== 'undefined') {
             results.push({"link": externalURL});
+
+            let playlistTracks = Array.from(body.items);
+            shuffleTracks(playlistTracks); // Shuffle tracks in the playlist
+
             let validTracks = 0;
             let i = 0;
-            while (i < body.items.length && validTracks < 20) {
-              if (body.items[i].track !== null) {
-                let track = body.items[i].track;
+            while (i < playlistTracks.length && validTracks < 20) {
+              if (playlistTracks[i].track !== null) {
+                let track = playlistTracks[i].track;
                 results.push({"artist": track.artists[0].name,
                               "track": {'name': track.name,
                                         'href': track.external_urls.spotify},
@@ -91,9 +94,18 @@ router.get('/search', function(req, res) {
         });
       }
     } else {
-      res.json(results);
+      res.send(error);
     }
   });
 });
+
+// Shuffle function
+
+function shuffleTracks(array) {
+  for (let i = array.length; i; i--) {
+      let j = Math.floor(Math.random() * i);
+      [array[i - 1], array[j]] = [array[j], array[i - 1]];
+  }
+}
 
 module.exports = router;

@@ -89,14 +89,13 @@ $('#getPlaylistBtn').click(function(event) {
 
     $.ajax({
       url: '/search',
-      dataType: 'json',
       data: {
         term: searchTerm
       }
-    }).done(function(data) {
-      if (data.length === 0) {
+    }).then(function(data) {
+      if (typeof data === 'string') {
         $('#musicQueryResults')
-          .append('<h3 class="header-small-margin">No results found.</h3>')
+          .append('<h3 class="header-small-margin">' + data + '</h3>')
           .append('<small>Try narrowing your search results.</small>');
       } else {
         // Enable "View in Spotify" button once we have results
